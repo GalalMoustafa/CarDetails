@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<defaultsMap>
+    <entry>
+        <key>app_version</key>
+        <value>1.9.28</value>
+    </entry>
+    <entry>
+        <key>version_code</key>
+        <value>47</value>
+    </entry>
+    <entry>
+        <key>skip_update</key>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>allow_ads</key>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>interval_dialog_refresh_rate</key>
+        <value>2</value>
+    </entry>
+    <entry>
+        <key>allow_interval_dialog</key>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>interval_dialog_start_delay</key>
+        <value>0</value>
+    </entry>
+    <entry>
+        <key>number_of_app_opens_to_allow_ads</key>
+        <value>2</value>
+    </entry>
+    <entry>
+        <key>allow_all_day_ads</key>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>offer_popup</key>
+        <value>false</value>
+    </entry>
+</defaultsMap>
