@@ -11,16 +11,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.softexper.cardetails.Data.POJO.data;
+import com.softexper.cardetails.Data.POJO.Data;
 
 import java.util.List;
 
 public class CarsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<data> carsList;
+    private List<Data> carsList;
     private Context context;
 
-    public CarsAdapter(List<data> carsList, Context context) {
+    public CarsAdapter(List<Data> carsList, Context context) {
         this.carsList = carsList;
         this.context = context;
     }
@@ -53,8 +53,19 @@ public class CarsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return carsList.size();
     }
 
-    public void setCarsList(List<data> carsList) {
+    public void setCarsList(List<Data> carsList) {
         this.carsList = carsList;
+    }
+
+    public void addToList(List<Data> carsList){
+        if (carsList.size() > 0){
+            carsList.addAll(carsList);
+        }
+
+    }
+
+    public List<Data> getCarsList() {
+        return carsList;
     }
 
     private class CarHolder extends RecyclerView.ViewHolder {

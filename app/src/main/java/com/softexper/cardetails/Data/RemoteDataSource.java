@@ -1,7 +1,8 @@
 package com.softexper.cardetails.Data;
 
+import com.softexper.cardetails.Data.POJO.CarResponse;
 import com.softexper.cardetails.Data.POJO.ResponseData;
-import com.softexper.cardetails.Data.POJO.data;
+import com.softexper.cardetails.Data.POJO.Data;
 
 import java.util.List;
 
@@ -43,7 +44,7 @@ public class RemoteDataSource {
         }
     }
 
-    public Call<ResponseData<List<data>>> getCarList(int page) {
-        return mApiService.getCarList();
+    public Call<CarResponse> getCarList(int page) {
+        return mApiService.getCarList(page);
     }
 }

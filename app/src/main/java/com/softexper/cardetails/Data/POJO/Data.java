@@ -1,11 +1,18 @@
 package com.softexper.cardetails.Data.POJO;
 
-public class data {
+import com.google.gson.annotations.SerializedName;
 
+public class Data {
+
+    @SerializedName("id")
     private int id;
+    @SerializedName("brand")
     private String brand;
+    @SerializedName("constructionYear")
     private String constractionYear;
+    @SerializedName("isUsed")
     private String isUsed;
+    @SerializedName("imageUrl")
     private String imageUrl;
 
     public int getId() {

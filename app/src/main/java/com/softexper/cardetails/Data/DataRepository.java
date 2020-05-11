@@ -1,7 +1,10 @@
 package com.softexper.cardetails.Data;
 
+import android.util.Log;
+
+import com.softexper.cardetails.Data.POJO.CarResponse;
 import com.softexper.cardetails.Data.POJO.ResponseData;
-import com.softexper.cardetails.Data.POJO.data;
+import com.softexper.cardetails.Data.POJO.Data;
 
 import java.io.IOException;
 import java.util.List;
@@ -31,7 +34,7 @@ public class DataRepository {
         return INSTANCE;
     }
 
-    public void getCarList(DataCallback<List<data>> callback, int page) {
+    public void getCarList(DataCallback<CarResponse> callback, int page) {
         mRemoteDataSource.getCarList(page).enqueue(new GeneralResponseCallback<>(callback));
     }
 
@@ -43,7 +46,7 @@ public class DataRepository {
         }
     }
 
-    private class GeneralResponseCallback<T extends ResponseData> implements Callback<T> {
+    private class GeneralResponseCallback<CarResponse> implements Callback<com.softexper.cardetails.Data.POJO.CarResponse> {
 
         private DataCallback callback;
 
@@ -52,9 +55,9 @@ public class DataRepository {
         }
 
         @Override
-        public void onResponse(Call<T> call, Response<T> response) {
+        public void onResponse(Call<com.softexper.cardetails.Data.POJO.CarResponse> call, Response<com.softexper.cardetails.Data.POJO.CarResponse> response) {
             if (response.isSuccessful()) {
-                callback.onDataReceived(response.body().getData());
+                callback.onDataReceived(response.body());
             } else {
                 String error = getResponseError(response);
                 callback.onFailure(new Exception(error));
@@ -63,10 +66,11 @@ public class DataRepository {
         }
 
         @Override
-        public void onFailure(Call<T> call, Throwable t) {
+        public void onFailure(Call<com.softexper.cardetails.Data.POJO.CarResponse> call, Throwable t) {
             callback.onFailure(t);
             callback.onFailure(t.getMessage());
         }
+
     }
 
 }
