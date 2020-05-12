@@ -1,10 +1,6 @@
 package com.softexper.cardetails.Data;
 
 import com.softexper.cardetails.Data.POJO.CarResponse;
-import com.softexper.cardetails.Data.POJO.ResponseData;
-import com.softexper.cardetails.Data.POJO.Data;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Retrofit;

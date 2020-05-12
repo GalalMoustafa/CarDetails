@@ -2,8 +2,8 @@ package com.softexper.cardetails;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,7 +14,6 @@ import com.softexper.cardetails.Data.DataRepository;
 import com.softexper.cardetails.Data.POJO.CarResponse;
 import com.softexper.cardetails.Data.POJO.Data;
 
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,21 +24,25 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private CarsAdapter carsAdapter;
     private int page = 1;
     LinearLayoutManager linearLayoutManager;
+    private boolean isLoading = false;
+    List<Data> dataList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        dataList = new ArrayList<>();
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
         carsRecyclerView = findViewById(R.id.car_recycler_view);
         mSwipeRefreshLayout.setOnRefreshListener(this);
         linearLayoutManager = new LinearLayoutManager(this);
-        carsAdapter = new CarsAdapter(new ArrayList<>(), this);
+        carsAdapter = new CarsAdapter(dataList, this);
 
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary,
                 android.R.color.holo_green_dark,
                 android.R.color.holo_orange_dark,
                 android.R.color.holo_blue_dark);
+        carsRecyclerView.addOnScrollListener(recyclerViewOnScrollListener);
         carsRecyclerView.setLayoutManager(linearLayoutManager);
         carsRecyclerView.setHasFixedSize(false);
         carsRecyclerView.setAdapter(carsAdapter);
@@ -57,7 +60,13 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         DataCallback<CarResponse> dataCallback = new DataCallback<CarResponse>() {
             @Override
             public void onDataReceived(CarResponse carResponse) {
-                carsAdapter.setCarsList(carResponse.getData());
+                if (carResponse.getData() != null){
+                    for (int i = 0 ; i < carResponse.getData().size(); i++){
+                        dataList.add(carResponse.getData().get(i));
+                        isLoading = false;
+                        Toast.makeText(MainActivity.this, "Page " + page + " Loaded!", Toast.LENGTH_SHORT).show();
+                    }
+                }
                 carsAdapter.notifyDataSetChanged();
                 mSwipeRefreshLayout.setRefreshing(false);
             }
@@ -75,5 +84,32 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         mSwipeRefreshLayout.setRefreshing(true);
         getRecyclerViewData(1);
     }
+
+    private RecyclerView.OnScrollListener recyclerViewOnScrollListener = new RecyclerView.OnScrollListener() {
+        @Override
+        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+        }
+
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+            int visibleItemCount = linearLayoutManager.getChildCount();
+            int totalItemCount = linearLayoutManager.getItemCount();
+            int firstVisibleItemPosition = linearLayoutManager.findFirstVisibleItemPosition();
+
+            if (!isLoading) {
+                if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
+                        && firstVisibleItemPosition >= 0
+                        && totalItemCount >= 10
+                        && page < 4) {
+                    page = page + 1;
+                    getRecyclerViewData(page);
+                    isLoading = true;
+                    Toast.makeText(MainActivity.this, "Loading next Page!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    };
 
 }

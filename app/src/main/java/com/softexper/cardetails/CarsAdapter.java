@@ -35,17 +35,21 @@ public class CarsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         CarHolder carHolder = (CarHolder) holder;
-        if (!carsList.get(position).getImageUrl().isEmpty()) {
-            Glide.with(context).load(carsList.get(position).getImageUrl()).centerCrop().into(((CarHolder) holder).carImage);
+        if (carsList.get(position) != null){
+            if (carsList.get(position).getImageUrl() != null &&
+                    !carsList.get(position).getImageUrl().isEmpty()) {
+                Glide.with(context).load(carsList.get(position).getImageUrl()).centerCrop().into(((CarHolder) holder).carImage);
+            }
+            carHolder.carBrand.setText(carsList.get(position).getBrand());
+            boolean isUsed = Boolean.parseBoolean(carsList.get(position).getIsUsed());
+            if (isUsed){
+                carHolder.carCondition.setText("Used");
+            }else {
+                carHolder.carCondition.setText("New");
+            }
+            carHolder.carYear.setText(carsList.get(position).getConstractionYear());
         }
-        carHolder.carBrand.setText(carsList.get(position).getBrand());
-        boolean isUsed = Boolean.parseBoolean(carsList.get(position).getIsUsed());
-        if (isUsed){
-            carHolder.carCondition.setText("Used");
-        }else {
-            carHolder.carCondition.setText("New");
-        }
-        carHolder.carYear.setText(carsList.get(position).getConstractionYear());
+
     }
 
     @Override
@@ -55,13 +59,6 @@ public class CarsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public void setCarsList(List<Data> carsList) {
         this.carsList = carsList;
-    }
-
-    public void addToList(List<Data> carsList){
-        if (carsList.size() > 0){
-            carsList.addAll(carsList);
-        }
-
     }
 
     public List<Data> getCarsList() {
