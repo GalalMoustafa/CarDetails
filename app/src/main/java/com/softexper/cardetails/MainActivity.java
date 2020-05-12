@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             @Override
             public void run() {
                 mSwipeRefreshLayout.setRefreshing(true);
-                getRecyclerViewData(1);
+                getRecyclerViewData(page);
             }
         });
     }
@@ -61,6 +61,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             @Override
             public void onDataReceived(CarResponse carResponse) {
                 if (carResponse.getData() != null){
+                    if (page == 1){
+                        dataList.clear();
+                    }
                     for (int i = 0 ; i < carResponse.getData().size(); i++){
                         dataList.add(carResponse.getData().get(i));
                         isLoading = false;
@@ -82,7 +85,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     @Override
     public void onRefresh() {
         mSwipeRefreshLayout.setRefreshing(true);
-        getRecyclerViewData(1);
+        page = 1;
+        getRecyclerViewData(page);
     }
 
     private RecyclerView.OnScrollListener recyclerViewOnScrollListener = new RecyclerView.OnScrollListener() {
